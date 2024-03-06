@@ -24,4 +24,28 @@ ngOnInit(): void {
     })
   }
 
+  adddToWishlist(product:any){
+    if(sessionStorage.getItem("token")){
+      //proceed to wishlist
+      this.api.addtowishlistAPI(product).subscribe({
+        next:(res:any)=>{
+          alert(`Product '${res.title}' added to your wishlist`)
+        },
+        error:(reason:any)=>{
+          console.log(reason);
+          alert(reason.error)
+        }
+      })
+    }else{
+      alert('Please Login')
+    }
+  }
+
+  addToCart(product:any){
+    if(sessionStorage.getItem("token")){
+
+    }else{
+      alert("Please login")
+    }
+  }
 }
