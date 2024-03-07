@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-all-products',
@@ -8,7 +9,7 @@ import { ApiService } from '../services/api.service';
 })
 export class AllProductsComponent implements OnInit {
   allProducts:any=[]
-constructor (private api:ApiService){}
+constructor (private api:ApiService,private toaster:ToastrService){}
 ngOnInit(): void {
   this.getAllproducts();
 }
@@ -29,7 +30,8 @@ ngOnInit(): void {
       //proceed to wishlist
       this.api.addtowishlistAPI(product).subscribe({
         next:(res:any)=>{
-          alert(`Product '${res.title}' added to your wishlist`)
+          this.toaster.success(`Product '${res.title}' added to your wishlist`)
+          this.api.getWishlistCount();
         },
         error:(reason:any)=>{
           console.log(reason);
@@ -37,7 +39,7 @@ ngOnInit(): void {
         }
       })
     }else{
-      alert('Please Login')
+      this.toaster.info('Please Login')
     }
   }
 
@@ -45,7 +47,7 @@ ngOnInit(): void {
     if(sessionStorage.getItem("token")){
 
     }else{
-      alert("Please login")
+      this.toaster.error("Please login")
     }
   }
 }

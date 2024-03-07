@@ -2,6 +2,7 @@ import { Component, SecurityContext } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -12,7 +13,8 @@ export class LoginComponent {
   constructor(
     private fb: FormBuilder,
     private api: ApiService,
-    private router: Router
+    private router: Router,
+    private toastr: ToastrService
   ) {}
 
   loginForm = this.fb.group({
@@ -28,9 +30,10 @@ export class LoginComponent {
       const user = { password, email }
       this.api.loginAPI(user).subscribe({
         next: (res: any) => {
-      alert(`${res.existingUser.username} logged in successfully!!`)
+      this.toastr.success(`${res.existingUser.username} logged in successfully!!`)
           sessionStorage.setItem('existingUser', JSON.stringify(res.existingUser))
           sessionStorage.setItem('token', res.token)
+          this.api.getWishlistCount();
           this.loginForm.reset()
           // navigate to login
           this.router.navigateByUrl('')

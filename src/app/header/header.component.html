@@ -10,14 +10,18 @@
           <input style="width: 400px;" class="form-control me-2" type="search" placeholder="Search By Product Name" aria-label="Search">
           </li>
           <li class="nav-item">
-          <button routerLink="wishlist" class="btn btn-outline-success" type="submit"><i class="fa-solid fa-heart text-danger "></i>  Wishlist <span class="badge bg-dark">0</span></button>
+          <button routerLink="wishlist" class="btn btn-outline-success" type="submit"><i class="fa-solid fa-heart text-danger "></i>  Wishlist <span class="badge bg-dark">{{wishlistCount}}</span></button>
           </li>
           <li class="nav-item ms-2 ">
           <button routerLink="cart" class="btn btn-outline-success" type="submit"><i class="fa-solid fa-cart-plus text-success "></i>  Cart <span class="badge bg-dark">0</span></button>
             
           </li>
-          <li class="nav-item">
+          <li *ngIf="!loginUsername" class="nav-item">
             <a class="nav-link text-dark  " routerLink="login" ><i class="fa-solid fa-user me-1 "></i>Login</a>
+          </li>
+          <li *ngIf="loginUsername" class="nav-item">
+           <i class="fa-solid fa-user mx-1 "></i><span class="mx-1">{{loginUsername}}</span>
+            <button (click)="logout()" class="btn btn-primary">Logout</button>
           </li>
         </ul>
         

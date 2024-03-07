@@ -17,7 +17,7 @@ export class RegisterComponent {
     email: ['',[Validators.required,Validators.email]],
     password: ['',[Validators.required,Validators.pattern('[a-zA-Z0-9]*')]]
   })
-  constructor(private fb: FormBuilder,private api:ApiService,private router:Router) { }
+  constructor(private fb: FormBuilder,private api:ApiService,private router:Router,private toaster:ToastrService) { }
 
 
 register(){
@@ -29,12 +29,12 @@ register(){
     const user= {username,email,password}
     this.api.registerAPI(user).subscribe({
       next:(res:any)=>{
-        alert(`${res.username} has successfully `)
+       this.toaster.success(`${res.username} has successfully `)
         //navigate to login
         this.router.navigateByUrl('/login')
       },
       error:(reason:any)=>{
-        alert(reason.error)
+        this.toaster.error(reason.error)
       }
     })
   }
