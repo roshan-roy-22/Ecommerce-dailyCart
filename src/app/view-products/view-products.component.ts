@@ -45,4 +45,21 @@ export class ViewProductsComponent implements OnInit {
       this.toaster.info('Please Login')
     }
   }
+
+  addToCart(product: any) {
+    if (sessionStorage.getItem('token')) {
+      product.quantity = 1;
+      this.api.addtoCartAPI(product).subscribe({
+        next: (res: any) => {
+          this.toaster.success(res);
+          this.api.getCartCount();
+        },
+        error: (reason: any) => {
+          this.toaster.warning(reason.error);
+        },
+      });
+    } else {
+      this.toaster.error('Please login');
+    }
+  }
 }

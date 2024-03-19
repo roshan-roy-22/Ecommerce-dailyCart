@@ -8,11 +8,14 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ApiService {
 
+  searchTerm = new BehaviorSubject("")
+  cartCount = new BehaviorSubject(0)
   wishlistCount = new BehaviorSubject(0)
   SERVER_URL = 'http://localhost:3000';
   constructor(private http: HttpClient) {
     if(sessionStorage.getItem("token")){
       this.getWishlistCount();
+      this.getCartCount();
     }
   }
 
@@ -53,6 +56,44 @@ export class ApiService {
     this.getAllwishlistAPI().subscribe((res:any)=>{
       this.wishlistCount.next(res.length)
     })
+  }
+
+  removeWishlistItemAPI(id:any){
+    return this.http.delete(`${this.SERVER_URL}/remove-wishlist/${id}`,this.appendTokenHeader())
+  }
+
+  addtoCartAPI(product:any){
+    return this.http.post(`${this.SERVER_URL}/add-to-cart`,product,this.appendTokenHeader())
+  }
+
+  getCartAPI(){
+    return this.http.get(`${this.SERVER_URL}/get-cart`,this.appendTokenHeader())
+  }
+
+  getCartCount(){
+    this.getCartAPI().subscribe((res:any)=>{
+      this.cartCount.next(res.length)
+    })
+  }
+
+  removeCartitemAPI(id:any){
+    return this.http.delete(`${this.SERVER_URL}/remove-cart/${id}`,this.appendTokenHeader())
+  }
+
+  incrementCartAPI(id: any) {
+    return this.http.get(`${this.SERVER_URL}/cart-inc/${id}`, this.appendTokenHeader())
+  }
+
+  decrementCartAPI(id: any) {
+    return this.http.get(`${this.SERVER_URL}/cart-decrement/${id}`, this.appendTokenHeader())
+  }
+
+  emptyCartAPI() {
+    return this.http.delete(`${this.SERVER_URL}/empty-cart`, this.appendTokenHeader())
+  }
+
+  isLoggedIn(){
+    return !!sessionStorage.getItem("token")
   }
 
 }

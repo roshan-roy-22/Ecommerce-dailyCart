@@ -23,8 +23,8 @@
                     <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                         <div class="card-footer p-4 pt-0 border-top-0 bg-transparent">
                             <div class="d-flex justify-content-between">
-                                <button class="btn"><i class="fa-solid fa-heart-circle-xmark text-danger"></i></button>
-                                <button class="btn"><i class="fa-solid fa-cart-plus text-success"></i></button>
+                                <button (click)="removeItem(product._id)" class="btn"><i class="fa-solid fa-heart-circle-xmark text-danger"></i></button>
+                                <button (click)="addToCart(product)" class="btn"><i class="fa-solid fa-cart-plus text-success"></i></button>
                             </div>
                         </div>
                     </div>

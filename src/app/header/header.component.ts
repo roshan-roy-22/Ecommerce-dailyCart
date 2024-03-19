@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -7,12 +8,15 @@ import { ApiService } from '../services/api.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit{
-constructor (private api:ApiService){}
+constructor (private api:ApiService,private router:Router){}
   ngOnInit(): void {
     if(sessionStorage.getItem("existingUser")){
       this.loginUsername=JSON.parse(sessionStorage.getItem("existingUser") || "").username.split(" ")[0]
       this.api.wishlistCount.subscribe((res:any)=>{
         this.wishlistCount=res
+      })
+      this.api.cartCount.subscribe((res:any)=>{
+        this.cartCount=res
       })
     }else{
       this.loginUsername=""
@@ -20,12 +24,17 @@ constructor (private api:ApiService){}
   }
 loginUsername:String=""
 wishlistCount:number=0
+cartCount:number=0
 
-
+getSearch(event:any){
+  this.api.searchTerm.next(event.target.value)
+}
 logout(){
-  if(sessionStorage.getItem("existingUser")){
-    sessionStorage.removeItem("existingUser")
-  }
+ sessionStorage.clear();
+ this.loginUsername=""
+ this.cartCount=0
+ this.wishlistCount=0
+ this.router.navigateByUrl('/')
 }
 
 
